@@ -1,23 +1,27 @@
-import logo from './logo.svg';
 import './App.css';
+import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import { BrowserRouter, Switch, Route } from "react-router-dom";
+
+import LandingPage from './components/LandingPage/LandingPage';
+import RegisterPage from './components/Register/RegisterPage';
+import LoginPage from './components/Login/LoginPage';
+import CreateGame from './components/CreateGame/CreateGame';
+import JoinGame from './components/JoinGame/JoinGame';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <BrowserRouter>
+          {/* <Navbar></Navbar> */}
+                <Switch>
+                    <Route   exact path="/"      component={LandingPage} />
+                    <Route   exact path="/register"      component={RegisterPage} />
+                    <Route   exact path="/login"     component={LoginPage}/>
+                    {/* <Route   exact path="/home"      component={Home} />                   */}
+                    <Route   exact path="/creategame"          component={CreateGame} />
+                    <Route   exact path="/joingame"          component={JoinGame} />
+                </Switch>
+      </BrowserRouter>
     </div>
   );
 }

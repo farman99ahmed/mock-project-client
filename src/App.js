@@ -1,28 +1,19 @@
-import './App.css';
-import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
-import { BrowserRouter, Switch, Route } from "react-router-dom";
-
-import LandingPage from './components/LandingPage/LandingPage';
-import RegisterPage from './components/Register/RegisterPage';
-import LoginPage from './components/Login/LoginPage';
-import CreateGame from './components/CreateGame/CreateGame';
-import JoinGame from './components/JoinGame/JoinGame';
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import Dashboard from "./components/Dashboard";
+import LoginPage from "./components/LoginPage";
+import NavigationBar from "./components/NavigationBar";
+import RegisterPage from "./components/RegisterPage";
 
 function App() {
   return (
-    <div className="App">
-      <BrowserRouter>
-          {/* <Navbar></Navbar> */}
-                <Switch>
-                    <Route   exact path="/"      component={LandingPage} />
-                    <Route   exact path="/register"      component={RegisterPage} />
-                    <Route   exact path="/login"     component={LoginPage}/>
-                    {/* <Route   exact path="/home"      component={Home} />                   */}
-                    <Route   exact path="/creategame"          component={CreateGame} />
-                    <Route   exact path="/joingame"          component={JoinGame} />
-                </Switch>
-      </BrowserRouter>
-    </div>
+    <Router>
+      <NavigationBar />
+      <Switch>
+          <Route exact path="/" component={Dashboard} />
+          <Route path="/login" component={LoginPage} />
+          <Route path="/register" component={RegisterPage} />
+        </Switch>
+    </Router>
   );
 }
 

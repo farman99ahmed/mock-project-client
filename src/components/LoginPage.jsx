@@ -10,16 +10,39 @@ import { FaSave } from 'react-icons/fa';
 import { FiAlertTriangle } from 'react-icons/fi';
 import { Link, useHistory } from 'react-router-dom';
 import { useState, useContext } from 'react';
+import { Login } from '../services/Auth';
+import AuthContext from '../context/AuthContext';
 
 const LoginPage = () => {
         const [email, setEmail] = useState('');
         const [password, setPassword] = useState('');
         const [loading, setLoading] = useState(false);
         const [error, setError] = useState(null);
+        const { setCurrentUser } = useContext(AuthContext);
         const history = useHistory();
 
         const handleSubmit = async (e) => {
             e.preventDefault();
+            setLoading(true);
+            if (!(email && password)) {
+                setError('All inputs are required');
+                setLoading(false);
+            } else {
+                const response = await Login(email, password);
+                if ("error" in response) {
+                    setError(response.error);
+                    setLoading(false);
+                } else {
+                    setCurrentUser({
+                        _id: response._id,
+                        name: response.name,
+                        email: response.email,
+                        token: response.token
+                    });
+                    setLoading(false);
+                    history.push('/');
+                }
+            }
         }
 
     return (

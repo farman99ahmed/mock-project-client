@@ -21,18 +21,18 @@ const NavigationBar = () => {
           <GiCardAceSpades /> POKER Planner</Navbar.Brand>
         <Nav className="me-auto">
         </Nav>
-                <>
-                <Nav className="p-2">
-                  <Link to="/">
-                  <Button variant="outline-light">
-                    <ImHome /> Home</Button>
-                  </Link>
-                </Nav>
-                <Nav className="p-2">
-                  <Button variant="outline-light" onClick={handleSignOut}>
-                    <GoSignOut /> Sign Out</Button>
-                </Nav>
-              </>
+        <>
+          <Nav className="p-2">
+            <Link to="/">
+            <Button variant="outline-light">
+              <ImHome /> Home</Button>
+            </Link>
+          </Nav>
+          <Nav className="p-2">
+            <Button variant="outline-light" onClick={handleSignOut}>
+              <GoSignOut /> Sign Out</Button>
+          </Nav>
+        </>
       </Container>
     </Navbar>
  )   

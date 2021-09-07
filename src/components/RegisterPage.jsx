@@ -5,6 +5,7 @@ import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Alert from 'react-bootstrap/Alert';
+import { Register } from '../services/Auth';
 import { BiLogIn } from 'react-icons/bi';
 import { FaSave } from 'react-icons/fa';
 import { useState } from 'react';
@@ -33,19 +34,18 @@ const RegisterPage = () => {
             setError('Passwords do not match.')
             setLoading(false);
         } else {
-        //     const response = await Register(name, email, mobile, password);
-        //     if ("error" in response) {
-        //         setError(response.error)
-        //         setLoading(false);
-        //     } else {
-        //         setSuccess('User created successfully');
-        //         setName('');
-        //         setEmail('');
-        //         setMobile('');
-        //         setPassword('');
-        //         setConfirmPassword('');
-        //         setLoading(false);
-        // }
+            const response = await Register(name, email, password);
+            if ("error" in response) {
+                setError(response.error)
+                setLoading(false);
+            } else {
+                setSuccess('User created successfully');
+                setName('');
+                setEmail('');
+                setPassword('');
+                setConfirmPassword('');
+                setLoading(false);
+        }
     }
 }
 

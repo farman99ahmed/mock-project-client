@@ -1,5 +1,5 @@
 import { useState, useContext, useEffect } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import AuthContext from '../context/AuthContext';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -23,7 +23,6 @@ const Dashboard = () => {
     const [games, setGames] = useState([]);
     const { currentUser } = useContext(AuthContext);
     const history = useHistory();
-    console.log(currentUser.token);
 
     const viewGame = async (e, _id) => {
         e.preventDefault();
@@ -33,7 +32,6 @@ const Dashboard = () => {
                 _id
             },
           });
-
     }
 
     const startNewGame = async (e) => {
@@ -99,7 +97,7 @@ const Dashboard = () => {
                         <Card.Body>
                         <Card.Title>{game.title}</Card.Title>
                         <Card.Text>Active: {game.is_active ? <FcApproval />  : <FcCancel />} </Card.Text>
-                            <Button variant="outline-success" size="sm" className="mx-1" size="sm" onClick={(e) => viewGame(e, game._id)}>
+                            <Button variant="outline-success" size="sm" className="mx-1" onClick={(e) => viewGame(e, game._id)}>
                                 <FaEye /> View</Button>
                         </Card.Body>
                         <Card.Footer>

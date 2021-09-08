@@ -28,7 +28,7 @@ const Game = () => {
     const [question, setQuestion] = useState('');
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null)
-    const [loading, setLoading] = useState('');
+    const [loading, setLoading] = useState(false);
     const [voteDisable, setVoteDisable] = useState(false)
     const { currentUser } = useContext(AuthContext);
     const points = [1, 2, 3, 5, 8, 13, 21, 34, 55, 89]
@@ -50,14 +50,14 @@ const Game = () => {
     const voteHandler = async (e, gameId, questionId, points) => {
         e.preventDefault();
         setVoteDisable(true);
-        await addVote(gameId, questionId, currentUser.name, points);
+        addVote(gameId, questionId, currentUser.name, points);
         setVoteDisable(false);
 
     }
     
     const toggleQuestionHandler = async (e, gameId, questionId) => {
         e.preventDefault();
-        await toggleQuestion(currentUser.token, gameId, questionId);
+        toggleQuestion(currentUser.token, gameId, questionId);
     }
 
     useEffect(() => {
@@ -111,8 +111,8 @@ const Game = () => {
                         <Placeholder xs={8} bg="dark" />
                     </Placeholder>
                     }
-                    {game &&
-                    <Tab.Container id="left-tabs-example" defaultActiveKey={game.questions[0]._id}>
+                    {game && 
+                    <Tab.Container id="left-tabs-example" defaultActiveKey="first">
                         <Row>
                             <Col sm={3}>
                             { game.questions.map((question) => {

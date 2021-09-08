@@ -16,7 +16,8 @@ const NavigationBar = () => {
 
   const handleSignOut = async (e) => {
       e.preventDefault();
-      setCurrentUser({ _id: null, name: null, email: null, token: null })
+      setCurrentUser({ _id: null, name: null, email: null, token: null });
+      window.sessionStorage.clear();
   }
 
  return (

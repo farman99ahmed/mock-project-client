@@ -39,6 +39,10 @@ const LoginPage = () => {
                         email: response.email,
                         token: response.token
                     });
+                    window.sessionStorage.setItem("_id", response._id);
+                    window.sessionStorage.setItem("name", response.name);
+                    window.sessionStorage.setItem("email", response.email);
+                    window.sessionStorage.setItem("token", response.token);
                     setLoading(false);
                     history.push('/');
                 }

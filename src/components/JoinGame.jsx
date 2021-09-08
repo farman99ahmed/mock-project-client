@@ -13,12 +13,12 @@ import { checkGame } from '../services/Game';
 import AuthContext from '../context/AuthContext';
 
 const JoinGame = () => {
-        const [name, setName] = useState('');
-        const [gameId, setGameId] = useState('');
-        const [loading, setLoading] = useState(false);
-        const [error, setError] = useState(null);
-        const { currentUser, setCurrentUser } = useContext(AuthContext);
-        const history = useHistory();
+    const [gameId, setGameId] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const { currentUser, setCurrentUser } = useContext(AuthContext);
+    const history = useHistory();
+    const [name, setName] = useState(currentUser.name);
 
         const handleSubmit = async (e) => {
             e.preventDefault();
@@ -40,6 +40,7 @@ const JoinGame = () => {
                             email: null,
                             token: null
                         });
+                        window.sessionStorage.setItem("name", name);
                     }
                     history.push({
                         pathname: '/game',

@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 import { useState } from "react";
 import AuthContext from './context/AuthContext';
 import Dashboard from "./components/Dashboard";
@@ -10,7 +10,7 @@ import JoinGame from "./components/JoinGame";
 import { PrivateRoute, ProtectedRoute } from "./components/Routes";
 
 function App() {
-  const [currentUser, setCurrentUser] = useState({ _id: null, name: null, email: null, token: null });
+  const [currentUser, setCurrentUser] = useState({ _id: window.sessionStorage.getItem("_id") , name: window.sessionStorage.getItem("name"), email: window.sessionStorage.getItem("email"), token: window.sessionStorage.getItem("token") });
   const value = {currentUser, setCurrentUser}
 
   return (
@@ -23,6 +23,7 @@ function App() {
           <Route exact path="/join" component={JoinGame} />
           <Route exact path="/login" component={LoginPage} />
           <Route exact path="/register" component={RegisterPage} />
+          <Redirect from="*" to="/" />
         </Switch>
       </Router>
     </AuthContext.Provider>

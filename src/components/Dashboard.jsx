@@ -21,6 +21,7 @@ const Dashboard = () => {
     const [loading, setLoading] = useState('');
     const [error, setError] = useState(null);
     const [games, setGames] = useState([]);
+    const [isGamesNull, setIsGamesNull] = useState(false);
     const { currentUser } = useContext(AuthContext);
     const history = useHistory();
 
@@ -50,7 +51,7 @@ const Dashboard = () => {
     useEffect(() => {
         async function fetchGames() {
             let response = await getMyGames(currentUser.token);
-            setGames(response);
+            response.length !== 0 ? setGames(response) : setIsGamesNull(true);
         }
         fetchGames();
         return () => {
@@ -84,14 +85,17 @@ const Dashboard = () => {
             <Container className="bg-light rounded-3 text-dark">
                 <Row className="justify-content-md-center my-5 p-5">
                     <h1 className="display-4 fw-bold p-2 text-center">My games</h1>
-                    {games.length === 0 &&
+                    { isGamesNull && 
+                        <h2 className="text-center m-2 p-2">No games created by you.</h2>
+                    }
+                    {(isGamesNull === false && games.length === 0) &&
                     <Placeholder as="p" animation="glow">
                         <Placeholder xs={12} bg="dark" />
                         <Placeholder xs={10} bg="dark" />
                         <Placeholder xs={8} bg="dark" />
                     </Placeholder>
                     }
-                    {games.length > 0 && games.map(game => { return ( 
+                    {games !== null && games.length > 0 && games.map(game => { return ( 
                     <Col md={3} key={game._id} className="p-2 m-2">
                     <Card bg="light" text="dark" className="mb-2">
                         <Card.Body>

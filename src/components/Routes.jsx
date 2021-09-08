@@ -15,7 +15,7 @@ const ProtectedRoute = ({component: Component, ...rest}) => {
     const {currentUser} = useContext(AuthContext);
     return (
         <Route {...rest} render={(props) => (
-            (currentUser._id === null && currentUser.name !== null) ? <Component {...props} /> : <Redirect to="/join" />
+            currentUser.name !== null ? <Component {...props} /> : <Redirect to="/join" />
         )} />
     )
 }

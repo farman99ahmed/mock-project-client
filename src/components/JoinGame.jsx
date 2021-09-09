@@ -18,7 +18,7 @@ const JoinGame = () => {
     const [error, setError] = useState(null);
     const { currentUser, setCurrentUser } = useContext(AuthContext);
     const history = useHistory();
-    const [name, setName] = useState(currentUser.name);
+    const [name, setName] = useState(currentUser.name || '');
 
         const handleSubmit = async (e) => {
             e.preventDefault();

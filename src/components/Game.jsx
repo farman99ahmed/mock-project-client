@@ -1,6 +1,6 @@
 import { useState, useContext, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { getGame, addQuestion, addVote, toggleQuestion } from '../services/Game';
+import { getGame, addQuestion, addVote, toggleQuestion, setActiveQuestion } from '../services/Game';
 import getPusherInstance from '../config/PusherConfig';
 import AuthContext from '../context/AuthContext';
 import Container from 'react-bootstrap/Container';
@@ -60,6 +60,11 @@ const Game = () => {
         toggleQuestion(currentUser.token, gameId, questionId);
     }
 
+    const setActiveGameHandler = async (gameId, questionId) => {
+        setActiveQuestion(currentUser.token, gameId, questionId);
+
+    }
+
     useEffect(() => {
         const channel = getPusherInstance().subscribe('game');
         async function fetchGame() {
@@ -94,9 +99,8 @@ const Game = () => {
                                     {setQuestion(e.target.value)}}/>
                             </FloatingLabel>
                         </Form.Group>
-                        <Button variant="outline-success" className="text-center" type="submit" size="lg"
-                            disabled={loading}>
-                            <FaSave /> {loading ? "Submitting" : "Submit"}
+                        <Button variant="outline-success" className="text-center" type="submit" disabled={loading}>
+                            <FaSave /> {loading ? "Adding" : "Add"}
                         </Button>
                     </Form>
                     }
@@ -111,23 +115,32 @@ const Game = () => {
                         <Placeholder xs={8} bg="dark" />
                     </Placeholder>
                     }
-                    {game && 
-                    <Tab.Container id="left-tabs-example" defaultActiveKey="first">
+                    {game && game.questions.length === 0 &&
+                    <h2 className="text-center m-2 p-2">No questions in this game.</h2>
+                    }
+                    {game && game.questions.length > 0 &&
+                    <Tab.Container id="left-tabs-example" defaultActiveKey={game.questions[0]._id}>
                         <Row>
-                            <Col sm={3}>
-                            { game.questions.map((question) => {
-                            return (
-                            <Nav variant="pills" className="flex-column" key={question._id}>
-                                <Nav.Item>
-                                    <Nav.Link eventKey={question._id}>{question.question}
-                                    </Nav.Link>
-                                </Nav.Item>
-                            </Nav>
-                            )
-                            })
-                            }
+                            <Col sm={4}>
+                            <Card border="dark" className="m-2 p-2">
+                                <Card.Header>Questions</Card.Header>
+                                <Card.Body>
+                                    { game.questions.map((question, index) => {
+                                    return (
+                                    <Nav variant="pills" className="flex-column" key={question._id}>
+                                        <Nav.Item>
+                                            <Nav.Link eventKey={question._id} onClick={() => setActiveGameHandler(game._id, question._id)}>
+                                                <Card.Text>{index+1}. {question.question} {game.active_question === question._id && <Badge pill bg="warning" className="text-dark">Live</Badge>}</Card.Text>
+                                            </Nav.Link>
+                                        </Nav.Item>
+                                    </Nav>
+                                    )
+                                    })
+                                    }
+                                </Card.Body>
+                            </Card>
                             </Col>
-                            <Col sm={9}>
+                            <Col sm={8}>
                             <Tab.Content>
                                 { game.questions.map((question) => {
                                 return (
@@ -135,7 +148,7 @@ const Game = () => {
                                     <Row className="justify-content-md-center">
                                         {question.votes.map((vote) => {
                                         return (
-                                        <Col md={3} className="p-2 m-2" key={vote._id}>
+                                        <Col md={3} className="px-2 m-2" key={vote._id}>
                                         <Card bg="light" text="dark" className="mb-2">
                                             <Card.Body>
                                                 <h1 className="text-center">
@@ -167,7 +180,7 @@ const Game = () => {
                                     {game && currentUser._id === game.started_by &&
                                     <Row className="p-3 m-3">
                                         <ButtonToolbar className="justify-content-md-center">
-                                            <Button className="w-50 text-center" variant="outline-success" size="lg"
+                                            <Button className="w-50 text-center" variant="outline-success"
                                                 onClick={(e)=> toggleQuestionHandler(e, game._id, question._id)}>
                                                 <FaChartBar /> {!question.is_active ? "Hide Results" : "Show Results"}
                                             </Button>

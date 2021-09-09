@@ -163,5 +163,27 @@ const checkGame = async (gameId) => {
     }
 }
 
+const setActiveQuestion = async (token, gameId, questionId) => {
+    try {
+        const config = {
+            method: 'post',
+            url: `${backendURL}/game/question/active`,
+            headers: JWTHeader(token),
+            data: {
+                gameId,
+                questionId
+            }
+        }
+        const response = await axios(config);
+        return ({
+            success: response.data.message
+        });
+    } catch (error) {
+        return ({
+            error: error.response.data.error
+        });
+    }
+}
 
-export { createGame, getMyGames, getGame, addQuestion, addVote, toggleGame, toggleQuestion, checkGame }
+
+export { createGame, getMyGames, getGame, addQuestion, addVote, toggleGame, toggleQuestion, checkGame, setActiveQuestion }

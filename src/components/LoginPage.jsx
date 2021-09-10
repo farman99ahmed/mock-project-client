@@ -1,10 +1,4 @@
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Card from 'react-bootstrap/Card';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import Alert from 'react-bootstrap/Alert';
+import {Container, Row, Col, Card, Button, Form, Alert} from 'react-bootstrap'
 import { BiLogIn } from 'react-icons/bi';
 import { FaSave } from 'react-icons/fa';
 import { FiAlertTriangle } from 'react-icons/fi';
@@ -52,9 +46,9 @@ const LoginPage = () => {
     return (
         <Container>
             <Row className="justify-content-md-center my-5">
-                <Card style={{ width: '50%' }} className="bg-light">
+                <Card style={{ width: '40%', marginTop: '5%'}} className="bg-dark border-info text-white">
                     <Card.Body>
-                        <Card.Title className="text-center display-6">Login</Card.Title>
+                        <Card.Title className="text-center display-5 fw-bold">LOGIN</Card.Title>
                         { error && <Alert variant="danger">
                             <FiAlertTriangle /> {error} </Alert> }
                         <Form onSubmit={handleSubmit}>
@@ -68,7 +62,7 @@ const LoginPage = () => {
                                 <Form.Control type="password" placeholder="Password" controlid="password"
                                     value={password} onChange={(e)=> {setPassword(e.target.value)}} />
                             </Form.Group>
-                            <Button variant="primary" type="submit" className="center w-100" disabled={loading}>
+                            <Button variant="info" type="submit" className="center w-100" disabled={loading}>
                                 <BiLogIn /> {loading ? "Loading" : "Submit"}
                             </Button>
                         </Form>
@@ -77,7 +71,7 @@ const LoginPage = () => {
                             <small className="text-center">Don't have an account?</small>
                             <Col>
                             <Link to="/register">
-                            <Button variant="outline-success" type="submit" className="w-100 m-1 p-1">
+                            <Button variant="outline-warning" type="submit" className="w-100 m-1 p-1">
                                 <FaSave /> Create an account
                             </Button>
                             </Link>

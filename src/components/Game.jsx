@@ -82,8 +82,8 @@ const Game = () => {
 
     return (
         <>
-            <Container className="bg-light rounded-3 text-dark">
-                <Row className="justify-content-md-center my-5 p-5">
+            <Container className="bg-dark rounded-3 text-white" style={{border:'2px solid #5bc0de'}}>
+                <Row className="justify-content-md-center my-2 p-3">
                     { error && <Alert variant="danger">
                         <FiAlertTriangle /> {error} </Alert> }
                     { success && <Alert variant="success">
@@ -106,8 +106,8 @@ const Game = () => {
                     }
                 </Row>
             </Container>
-            <Container className="bg-light rounded-3 text-dark">
-                <Row className="justify-content-md-center my-5 p-5">
+            <Container className="bg-dark rounded-3 text-white" style={{border:'2px solid #5bc0de', marginTop:"20px"}}>
+                <Row className="justify-content-md-center my-3 p-5">
                     {!game &&
                     <Placeholder as="p" animation="glow">
                         <Placeholder xs={12} bg="dark" />
@@ -122,8 +122,8 @@ const Game = () => {
                     <Tab.Container id="left-tabs-example" defaultActiveKey={game.questions[0]._id}>
                         <Row>
                             <Col sm={4}>
-                            <Card border="dark" className="m-2 p-2">
-                                <Card.Header>Questions</Card.Header>
+                            <Card border="info" className="m-2 p-2 bg-dark">
+                                <Card.Header className="fw-bold text-center">Questions</Card.Header>
                                 <Card.Body>
                                     { game.questions.map((question, index) => {
                                     return (
@@ -180,7 +180,7 @@ const Game = () => {
                                     {game && currentUser._id === game.started_by &&
                                     <Row className="p-3 m-3">
                                         <ButtonToolbar className="justify-content-md-center">
-                                            <Button className="w-50 text-center" variant="outline-success"
+                                            <Button className="w-50 text-center" variant="outline-warning"
                                                 onClick={(e)=> toggleQuestionHandler(e, game._id, question._id)}>
                                                 <FaChartBar /> {!question.is_active ? "Hide Results" : "Show Results"}
                                             </Button>

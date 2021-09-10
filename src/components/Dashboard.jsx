@@ -1,15 +1,7 @@
 import { useState, useContext, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import AuthContext from '../context/AuthContext';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import FloatingLabel from 'react-bootstrap/FloatingLabel';
-import Card from 'react-bootstrap/Card';
-import Alert from 'react-bootstrap/Alert';
-import Placeholder from 'react-bootstrap/Placeholder';
+import {Container, Row, Col, Button, Form, FloatingLabel, Card, Alert, Placeholder} from 'react-bootstrap'
 import { MdDateRange } from 'react-icons/md';
 import { FaPlay, FaEye } from 'react-icons/fa';
 import { FiAlertTriangle } from 'react-icons/fi';
@@ -62,15 +54,15 @@ const Dashboard = () => {
 
     return (
         <>
-            <Container className="bg-light rounded-3 text-dark">
-                <Row className="justify-content-md-center my-5 p-5">
+            <Container className="bg-dark rounded-3 text-white" style={{border:'2px solid #5bc0de'}}>
+                <Row className="justify-content-md-center my-2 p-3">
                     { error && <Alert variant="danger">
                         <FiAlertTriangle /> {error} </Alert> }
                     <h1 className="display-4 fw-bold p-2 text-center">Start new game</h1>
                     <Form onSubmit={startNewGame} className="text-center w-75">
                         <Form.Group className="mb-3">
-                            <FloatingLabel label="Game title" className="text-dark">
-                                <Form.Control type="text" placeholder="Game title" id="title" name="title" value={title}
+                            <FloatingLabel label="Game Title" className="text-dark">
+                                <Form.Control type="text" placeholder="Game Title" id="title" name="title" value={title}
                                     onChange={(e)=>
                                     {setTitle(e.target.value)}}/>
                             </FloatingLabel>
@@ -82,9 +74,10 @@ const Dashboard = () => {
                     </Form>
                 </Row>
             </Container>
-            <Container className="bg-light rounded-3 text-dark">
-                <Row className="justify-content-md-center my-5 p-5">
-                    <h1 className="display-4 fw-bold p-2 text-center">My games</h1>
+
+            <Container className="bg-dark rounded-3 text-white" style={{border:'2px solid #5bc0de', marginTop:"20px"}}>
+                <Row className="justify-content-md-center my-3 p-4">
+                    <h1 className="display-4 fw-bold p-2 text-center">My Games</h1>
                     { isGamesNull && 
                         <h2 className="text-center m-2 p-2">No games created by you.</h2>
                     }
@@ -101,7 +94,7 @@ const Dashboard = () => {
                         <Card.Body>
                         <Card.Title>{game.title}</Card.Title>
                         <Card.Text>Active: {game.is_active ? <FcApproval />  : <FcCancel />} </Card.Text>
-                            <Button variant="outline-success" size="sm" className="mx-1" onClick={(e) => viewGame(e, game._id)}>
+                            <Button variant="outline-dark" size="sm" className="mx-1" onClick={(e) => viewGame(e, game._id)}>
                                 <FaEye /> View</Button>
                         </Card.Body>
                         <Card.Footer>

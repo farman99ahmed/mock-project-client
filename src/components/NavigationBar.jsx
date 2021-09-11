@@ -1,7 +1,4 @@
-import Container from 'react-bootstrap/Container';
-import Navbar from 'react-bootstrap/Navbar';
-import Nav from 'react-bootstrap/Nav';
-import Button from 'react-bootstrap/Button';
+import {Container, Navbar, Nav, Button} from 'react-bootstrap'
 import logo from '../assets/logo.png'; 
 import { GoSignOut } from 'react-icons/go';
 import { Link } from 'react-router-dom';
@@ -23,10 +20,10 @@ const NavigationBar = () => {
   }
 
  return (
-    <Navbar bg="primary" variant="dark">
+    <Navbar variant="dark">
       <Container>
         <Navbar.Brand>
-          <img src={logo} height="50" className="d-inline-block align-top" alt="Poker planner logo" /></Navbar.Brand>
+          <img src={logo} height="90" className="d-inline-block align-top" alt="Poker planner logo" /></Navbar.Brand>
         <Nav className="me-auto">
         </Nav>
         <>

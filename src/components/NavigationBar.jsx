@@ -21,7 +21,7 @@ const NavigationBar = () => {
     <Navbar variant="dark">
       <Container>
         <Navbar.Brand>
-          <img src={logo} height="70" className="d-inline-block align-top" alt="Poker planner logo" /></Navbar.Brand>
+          <img src={logo} height="90" className="d-inline-block align-top" alt="Poker planner logo" /></Navbar.Brand>
         <Nav className="me-auto">
         </Nav>
         <>

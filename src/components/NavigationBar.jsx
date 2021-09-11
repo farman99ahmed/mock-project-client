@@ -8,6 +8,8 @@ import { Link } from 'react-router-dom';
 import { ImHome } from 'react-icons/im';
 import { RiGameFill } from 'react-icons/ri';
 import AuthContext from '../context/AuthContext';
+import { BiLogIn } from 'react-icons/bi';
+import { FaSave } from 'react-icons/fa';
 import { useContext } from 'react';
 
 
@@ -46,6 +48,22 @@ const NavigationBar = () => {
             <Button variant="light" onClick={handleSignOut}>
               <GoSignOut /> {currentUser._id ? "Sign Out" : "Exit"} ({currentUser.name})</Button>
           </Nav>
+          }          
+          {currentUser._id === null &&
+          <>
+          <Nav className="p-2">
+          <Link to="/login">
+          <Button variant="light">
+            <BiLogIn /> Login</Button>
+          </Link>
+        </Nav>          
+        <Nav className="p-2">
+          <Link to="/register">
+          <Button variant="light">
+            <FaSave /> Register</Button>
+          </Link>
+        </Nav>
+        </>
           }
         </>
       </Container>

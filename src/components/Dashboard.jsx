@@ -75,7 +75,7 @@ const Dashboard = () => {
                 </Row>
             </Container>
 
-            <Container className="bg-dark rounded-3 text-white" style={{border:'2px solid #5bc0de', marginTop:"20px"}}>
+            <Container className="bg-dark rounded-3 text-white mb-5 pb-5" style={{border:'2px solid #5bc0de', marginTop:"20px"}}>
                 <Row className="justify-content-md-center my-3 p-4">
                     <h1 className="display-4 fw-bold p-2 text-center">My Games</h1>
                     { isGamesNull && 
@@ -83,9 +83,9 @@ const Dashboard = () => {
                     }
                     {(isGamesNull === false && games.length === 0) &&
                     <Placeholder as="p" animation="glow">
-                        <Placeholder xs={12} bg="dark" />
-                        <Placeholder xs={10} bg="dark" />
-                        <Placeholder xs={8} bg="dark" />
+                        <Placeholder xs={12} bg="light" />
+                        <Placeholder xs={10} bg="light" />
+                        <Placeholder xs={8} bg="light" />
                     </Placeholder>
                     }
                     {games !== null && games.length > 0 && games.map(game => { return ( 

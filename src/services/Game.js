@@ -179,6 +179,7 @@ const setActiveQuestion = async (token, gameId, questionId) => {
             success: response.data.message
         });
     } catch (error) {
+        console.log(error);
         return ({
             error: error.response.data.error
         });

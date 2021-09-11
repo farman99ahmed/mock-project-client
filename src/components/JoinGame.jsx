@@ -48,7 +48,7 @@ const JoinGame = () => {
 
     return (
         <Container>
-            <Row className="justify-content-md-center my-5">
+            <Row className="justify-content-md-center mb-5">
                 <Card style={{ width: '50%', marginTop:"5%"}} className="bg-dark text-white border-info">
                     <Card.Body>
                         <Card.Title className="text-center display-6">Join a game</Card.Title>

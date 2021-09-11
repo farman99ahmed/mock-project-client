@@ -45,7 +45,7 @@ const LoginPage = () => {
 
     return (
         <Container>
-            <Row className="justify-content-md-center my-5">
+            <Row className="justify-content-md-center mb-5">
                 <Card style={{ width: '40%', marginTop: '5%'}} className="bg-dark border-info text-white">
                     <Card.Body>
                         <Card.Title className="text-center display-5 fw-bold">LOGIN</Card.Title>

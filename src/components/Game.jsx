@@ -17,7 +17,7 @@ import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Placeholder from 'react-bootstrap/Placeholder';
 import Badge from 'react-bootstrap/Badge'
-import { FaSave, FaUserCircle, FaChartBar } from 'react-icons/fa';
+import { FaSave, FaUserCircle, FaChartBar, FaVoteYea } from 'react-icons/fa';
 import { FiAlertTriangle } from 'react-icons/fi';
 import { MdCheckCircle } from 'react-icons/md';
 
@@ -60,7 +60,8 @@ const Game = () => {
         toggleQuestion(currentUser.token, gameId, questionId);
     }
 
-    const setActiveGameHandler = async (gameId, questionId) => {
+    const setActiveGameHandler = async (e, gameId, questionId) => {
+        e.preventDefault();
         setActiveQuestion(currentUser.token, gameId, questionId);
 
     }
@@ -106,13 +107,14 @@ const Game = () => {
                     }
                 </Row>
             </Container>
-            <Container className="bg-dark rounded-3 text-white" style={{border:'2px solid #5bc0de', marginTop:"20px"}}>
+            <Container className="bg-dark rounded-3 text-white mb-5 pb-5"
+                style={{border:'2px solid #5bc0de', marginTop:"20px"}}>
                 <Row className="justify-content-md-center my-3 p-5">
                     {!game &&
                     <Placeholder as="p" animation="glow">
-                        <Placeholder xs={12} bg="dark" />
-                        <Placeholder xs={10} bg="dark" />
-                        <Placeholder xs={8} bg="dark" />
+                        <Placeholder xs={12} bg="light" />
+                        <Placeholder xs={10} bg="light" />
+                        <Placeholder xs={8} bg="light" />
                     </Placeholder>
                     }
                     {game && game.questions.length === 0 &&
@@ -129,8 +131,10 @@ const Game = () => {
                                     return (
                                     <Nav variant="pills" className="flex-column" key={question._id}>
                                         <Nav.Item>
-                                            <Nav.Link eventKey={question._id} onClick={() => setActiveGameHandler(game._id, question._id)}>
-                                                <Card.Text>{index+1}. {question.question} {game.active_question === question._id && <Badge pill bg="warning" className="text-dark">Live</Badge>}</Card.Text>
+                                            <Nav.Link eventKey={question._id}>
+                                                <Card.Text>{index+1}. {question.question} {game.active_question ===
+                                                    question._id && <Badge pill bg="warning" className="text-dark">Live
+                                                    </Badge>}</Card.Text>
                                             </Nav.Link>
                                         </Nav.Item>
                                     </Nav>
@@ -145,6 +149,16 @@ const Game = () => {
                                 { game.questions.map((question) => {
                                 return (
                                 <Tab.Pane eventKey={question._id} key={question._id}>
+                                    {game && currentUser._id === game.started_by && game.active_question !== question._id &&
+                                    <Row className="p-3 m-3">
+                                        <ButtonToolbar className="justify-content-md-center">
+                                            <Button className="text-center" variant="outline-warning" size="sm"
+                                                onClick={(e)=> setActiveGameHandler(e, game._id, question._id)}>
+                                                <FaVoteYea /> Start Voting
+                                            </Button>
+                                        </ButtonToolbar>
+                                    </Row>
+                                    }
                                     <Row className="justify-content-md-center">
                                         {question.votes.map((vote) => {
                                         return (
@@ -167,7 +181,7 @@ const Game = () => {
                                     </Row>
                                     <Row>
                                         <ButtonToolbar className="w-100 justify-content-md-center">
-                                            {question.is_active && points.map((point) => {
+                                            {question.is_active && game.active_question === question._id && points.map((point) => {
                                             return (
                                             <ButtonGroup key={point} className="p-1 m-1">
                                                 <Button size="lg" onClick={(e)=> voteHandler(e, game._id, question._id,
@@ -177,7 +191,7 @@ const Game = () => {
                                             })}
                                         </ButtonToolbar>
                                     </Row>
-                                    {game && currentUser._id === game.started_by &&
+                                    {game && currentUser._id === game.started_by && question.votes.length > 0 &&
                                     <Row className="p-3 m-3">
                                         <ButtonToolbar className="justify-content-md-center">
                                             <Button className="w-50 text-center" variant="outline-warning"

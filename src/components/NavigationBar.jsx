@@ -46,7 +46,7 @@ const NavigationBar = () => {
               <GoSignOut /> {currentUser._id ? "Sign Out" : "Exit"} ({currentUser.name})</Button>
           </Nav>
           }          
-          {currentUser._id === null &&
+          {currentUser.name === null &&
           <>
           <Nav className="p-2">
           <Link to="/login">

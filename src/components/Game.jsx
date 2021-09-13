@@ -139,26 +139,31 @@ const Game = () => {
                                     }
                                     {game && currentUser._id === game.started_by &&
                                     <>
-                                        <Button variant="warning" onClick={handleShow}
-                                            style={{ margin: '10px', width: '100%' }}
-                                        >
-                                            Add New Question
-                                        </Button>
-                                    
+                                        <div className="text-center">
+                                            <Button variant="warning" onClick={handleShow} className="w-75"
+                                                style={{ marginTop: '10px'}}>
+                                                Add New Question
+                                            </Button>
+                                        </div>
                                         <Modal show={show} onHide={handleClose}>
                                             <Modal.Header closeButton className="bg-dark">
-                                                <Modal.Title><h2 className="fw-bold p-2 text-center"><code>Add New Question</code></h2></Modal.Title>
+                                                <Modal.Title>
+                                                    <h2 className="fw-bold p-2 text-center"><code>Add New
+                                                            Question</code></h2>
+                                                </Modal.Title>
                                             </Modal.Header>
                                             <Modal.Body className="bg-dark">
                                                 <Form onSubmit={addQuestionHandler} className="text-center w-100">
                                                     <Form.Group className="mb-3">
                                                         <FloatingLabel label="Enter a question" className="text-dark">
-                                                            <Form.Control type="text" placeholder="Enter a question" id="question" name="question"
-                                                                value={question} onChange={(e)=>
+                                                            <Form.Control type="text" placeholder="Enter a question"
+                                                                id="question" name="question" value={question}
+                                                                onChange={(e)=>
                                                                 {setQuestion(e.target.value)}}/>
                                                         </FloatingLabel>
                                                     </Form.Group>
-                                                    <Button variant="outline-success" className="text-center" type="submit" disabled={loading}>
+                                                    <Button variant="outline-success" className="text-center"
+                                                        type="submit" disabled={loading}>
                                                         <FaSave /> {loading ? "Adding" : "Add"}
                                                     </Button>
                                                 </Form>
@@ -179,12 +184,15 @@ const Game = () => {
                                 { game.questions.map((question) => {
                                 return (
                                 <Tab.Pane eventKey={question._id} key={question._id}>
-                                    <h2 className="display-6 fw-bold p-2 text-center"><code>Question Name : {question.question}</code></h2>
-                                    {game && currentUser._id === game.started_by && game.active_question !== question._id &&
+                                    <h2 className="display-6 fw-bold p-2 text-center"><code>Question Name :
+                                            {question.question}</code></h2>
+                                    {game && currentUser._id === game.started_by && game.active_question !==
+                                    question._id &&
                                     <Row className="p-3 m-3">
                                         <ButtonToolbar className="justify-content-md-center">
-                                            <Button className="text-center" variant="outline-warning" size="sm" disabled={resultsLoading}
-                                                onClick={(e)=> setActiveGameHandler(e, game._id, question._id)}>
+                                            <Button className="text-center" variant="outline-warning" size="sm"
+                                                disabled={resultsLoading} onClick={(e)=> setActiveGameHandler(e,
+                                                game._id, question._id)}>
                                                 <FaVoteYea /> {resultsLoading ? "Loading" : "Start Voting"}
                                             </Button>
                                         </ButtonToolbar>
@@ -198,7 +206,8 @@ const Game = () => {
                                             <Card.Body>
                                                 <h1 className="text-center">
                                                     <Badge bg="secondary">
-                                                        {!question.is_active || currentUser.name === vote.voter ? vote.points : "?"}
+                                                        {!question.is_active || currentUser.name === vote.voter ?
+                                                        vote.points : "?"}
                                                     </Badge>
                                                 </h1>
                                             </Card.Body>
@@ -211,45 +220,50 @@ const Game = () => {
                                         )
                                         })}
                                         {!question.is_active ?
-                                            <Card bg="light" text="dark" className="mb-2">
-                                                <Card.Body>
-                                                    <h4 className="text-center fw-bold p-2">
-                                                        <code>
-                                                            Total Votes Cast : {question.votes.length}
-                                                            <br />
-                                                            Most voted point/s : 
-                                                            <ul style={{listStyleType:'none', padding: '0'}}>
+                                        <Card bg="light" text="dark" className="mb-2">
+                                            <Card.Body>
+                                                <h4 className="text-center fw-bold p-2">
+                                                    <code>
+                                                        Total Votes Cast : {question.votes.length}
+                                                        <br />
+                                                        Most voted point/s :
+                                                        <ul style={{listStyleType:'none', padding: '0'}}>
                                                             {(() => {
-                                                                const aggregatedVotes = question.votes.reduce((acc, e) => acc.set(e.points, (acc.get(e.points) || 0) + 1), new Map());
-                                                                const maxVotesCount = [...aggregatedVotes.entries()].reduce((a, e ) => e[1] > a[1] ? e : a)[1];
-                                                                
-                                                                return (
-                                                                    [...aggregatedVotes.entries()].map(([key, value], index) => {
-                                                                        if(value === maxVotesCount) {
-                                                                            return (
-                                                                                <li key={index}>{key} with {value} vote/s</li>
-                                                                            )
-                                                                        }
-                                                                        return (
-                                                                            ""
-                                                                        )
-                                                                    })
-                                                                )
+                                                            const aggregatedVotes = question.votes.reduce((acc, e) =>
+                                                            acc.set(e.points, (acc.get(e.points) || 0) + 1), new Map());
+                                                            const maxVotesCount =
+                                                            [...aggregatedVotes.entries()].reduce((a, e ) => e[1] > a[1]
+                                                            ? e : a)[1];
+
+                                                            return (
+                                                            [...aggregatedVotes.entries()].map(([key, value], index) =>
+                                                            {
+                                                            if(value === maxVotesCount) {
+                                                            return (
+                                                            <li key={index}>{key} with {value} vote/s</li>
+                                                            )
+                                                            }
+                                                            return (
+                                                            ""
+                                                            )
+                                                            })
+                                                            )
                                                             })()}
-                                                            </ul>
-                                                        </code>
-                                                    </h4>
-                                                </Card.Body>
-                                            </Card>
+                                                        </ul>
+                                                    </code>
+                                                </h4>
+                                            </Card.Body>
+                                        </Card>
                                         : ""}
                                     </Row>
                                     <Row>
                                         {question.is_active && game.active_question === question._id ?
-                                            <h3 className="fw-bold p-2 text-center"><code>Cast your vote</code></h3>
-                                            : ""
+                                        <h3 className="fw-bold p-2 text-center"><code>Cast your vote</code></h3>
+                                        : ""
                                         }
                                         <ButtonToolbar className="w-100 justify-content-md-center">
-                                            {question.is_active && game.active_question === question._id && points.map((point) => {
+                                            {question.is_active && game.active_question === question._id &&
+                                            points.map((point) => {
                                             return (
                                             <ButtonGroup key={point} className="p-1 m-1">
                                                 <Button size="lg" onClick={(e)=> voteHandler(e, game._id, question._id,
@@ -262,8 +276,9 @@ const Game = () => {
                                     {game && currentUser._id === game.started_by && question.votes.length > 0 &&
                                     <Row className="p-3 m-3">
                                         <ButtonToolbar className="justify-content-md-center">
-                                            <Button className="w-50 text-center" variant="outline-warning" disabled={votesLoading}
-                                                onClick={(e)=> toggleQuestionHandler(e, game._id, question._id)}>
+                                            <Button className="w-50 text-center" variant="outline-warning"
+                                                disabled={votesLoading} onClick={(e)=> toggleQuestionHandler(e,
+                                                game._id, question._id)}>
                                                 <FaChartBar /> {votesLoading ? "Loading" : (!question.is_active ? "Hide Results" : "Show Results")}
                                             </Button>
                                         </ButtonToolbar>

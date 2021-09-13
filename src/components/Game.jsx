@@ -116,8 +116,8 @@ const Game = () => {
                     {game && game.questions.length === 0 &&
                     <h2 className="text-center m-2 p-2">No questions in this game.</h2>
                     }
-                    {game && game.questions.length > 0 &&
-                    <Tab.Container id="left-tabs-example" defaultActiveKey={game.questions[0]._id}>
+                    {game && 
+                    <Tab.Container id="left-tabs-example" defaultActiveKey={game.questions.length > 0 ? game.questions[0]._id : null}>
                         <Row>
                             <Col sm={4}>
                             <Card border="info" className="m-2 p-2 bg-dark">

@@ -139,7 +139,7 @@ const Game = () => {
                                     }
                                     {game && currentUser._id === game.started_by &&
                                     <>
-                                        <Button variant="primary" onClick={handleShow}
+                                        <Button variant="warning" onClick={handleShow}
                                             style={{ margin: '10px', width: '100%' }}
                                         >
                                             Add New Question

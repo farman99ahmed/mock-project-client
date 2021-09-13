@@ -192,7 +192,8 @@ const Game = () => {
                                         <Card bg="light" text="dark" className="mb-2">
                                             <Card.Body>
                                                 <h1 className="text-center">
-                                                    <Badge bg="secondary">{!question.is_active ? vote.points : "?"}
+                                                    <Badge bg="secondary">
+                                                        {!question.is_active || currentUser.name === vote.voter ? vote.points : "?"}
                                                     </Badge>
                                                 </h1>
                                             </Card.Body>

@@ -30,6 +30,8 @@ const Game = () => {
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null)
     const [loading, setLoading] = useState(false);
+    const [resultsLoading, setResultsLoading] = useState(false);
+    const [votesLoading, setVotesLoading] = useState(false);
     const [voteDisable, setVoteDisable] = useState(false)
     const { currentUser } = useContext(AuthContext);
     const points = [1, 2, 3, 5, 8, 13, 21, 34, 55, 89]
@@ -62,13 +64,16 @@ const Game = () => {
     
     const toggleQuestionHandler = async (e, gameId, questionId) => {
         e.preventDefault();
-        toggleQuestion(currentUser.token, gameId, questionId);
+        setVotesLoading(true);
+        await toggleQuestion(currentUser.token, gameId, questionId);
+        setVotesLoading(false);
     }
 
     const setActiveGameHandler = async (e, gameId, questionId) => {
         e.preventDefault();
-        setActiveQuestion(currentUser.token, gameId, questionId);
-
+        setResultsLoading(true);
+        await setActiveQuestion(currentUser.token, gameId, questionId);
+        setResultsLoading(false);
     }
 
     useEffect(() => {
@@ -178,9 +183,9 @@ const Game = () => {
                                     {game && currentUser._id === game.started_by && game.active_question !== question._id &&
                                     <Row className="p-3 m-3">
                                         <ButtonToolbar className="justify-content-md-center">
-                                            <Button className="text-center" variant="outline-warning" size="sm"
+                                            <Button className="text-center" variant="outline-warning" size="sm" disabled={resultsLoading}
                                                 onClick={(e)=> setActiveGameHandler(e, game._id, question._id)}>
-                                                <FaVoteYea /> Start Voting
+                                                <FaVoteYea /> {resultsLoading ? "Loading" : "Start Voting"}
                                             </Button>
                                         </ButtonToolbar>
                                     </Row>
@@ -213,16 +218,16 @@ const Game = () => {
                                                             Total Votes Cast : {question.votes.length}
                                                             <br />
                                                             Most voted point/s : 
-                                                            <ul style={{listStyleType:'none'}}>
+                                                            <ul style={{listStyleType:'none', padding: '0'}}>
                                                             {(() => {
                                                                 const aggregatedVotes = question.votes.reduce((acc, e) => acc.set(e.points, (acc.get(e.points) || 0) + 1), new Map());
                                                                 const maxVotesCount = [...aggregatedVotes.entries()].reduce((a, e ) => e[1] > a[1] ? e : a)[1];
                                                                 
                                                                 return (
-                                                                    [...aggregatedVotes.entries()].map(([key, value]) => {
+                                                                    [...aggregatedVotes.entries()].map(([key, value], index) => {
                                                                         if(value === maxVotesCount) {
                                                                             return (
-                                                                                <li>{key} with {value} vote/s</li>
+                                                                                <li key={index}>{key} with {value} vote/s</li>
                                                                             )
                                                                         }
                                                                         return (
@@ -257,9 +262,9 @@ const Game = () => {
                                     {game && currentUser._id === game.started_by && question.votes.length > 0 &&
                                     <Row className="p-3 m-3">
                                         <ButtonToolbar className="justify-content-md-center">
-                                            <Button className="w-50 text-center" variant="outline-warning"
+                                            <Button className="w-50 text-center" variant="outline-warning" disabled={votesLoading}
                                                 onClick={(e)=> toggleQuestionHandler(e, game._id, question._id)}>
-                                                <FaChartBar /> {!question.is_active ? "Hide Results" : "Show Results"}
+                                                <FaChartBar /> {votesLoading ? "Loading" : (!question.is_active ? "Hide Results" : "Show Results")}
                                             </Button>
                                         </ButtonToolbar>
                                     </Row>

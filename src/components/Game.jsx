@@ -17,6 +17,7 @@ import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Placeholder from 'react-bootstrap/Placeholder';
 import Badge from 'react-bootstrap/Badge'
+import Modal from 'react-bootstrap/Modal'
 import { FaSave, FaUserCircle, FaChartBar, FaVoteYea } from 'react-icons/fa';
 import { FiAlertTriangle } from 'react-icons/fi';
 import { MdCheckCircle } from 'react-icons/md';
@@ -32,6 +33,10 @@ const Game = () => {
     const [voteDisable, setVoteDisable] = useState(false)
     const { currentUser } = useContext(AuthContext);
     const points = [1, 2, 3, 5, 8, 13, 21, 34, 55, 89]
+    const [show, setShow] = useState(false);
+
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
 
     const addQuestionHandler = async (e) => {
         e.preventDefault();
@@ -91,20 +96,6 @@ const Game = () => {
                         <MdCheckCircle /> <strong>{success} </strong></Alert> }
 
                     <h1 className="display-6 fw-bold p-2 text-center"><code>Game ID: {_id}</code></h1>
-                    {game && currentUser._id === game.started_by &&
-                    <Form onSubmit={addQuestionHandler} className="text-center w-75">
-                        <Form.Group className="mb-3">
-                            <FloatingLabel label="Add a question" className="text-dark">
-                                <Form.Control type="text" placeholder="Add a question" id="question" name="question"
-                                    value={question} onChange={(e)=>
-                                    {setQuestion(e.target.value)}}/>
-                            </FloatingLabel>
-                        </Form.Group>
-                        <Button variant="outline-success" className="text-center" type="submit" disabled={loading}>
-                            <FaSave /> {loading ? "Adding" : "Add"}
-                        </Button>
-                    </Form>
-                    }
                 </Row>
             </Container>
             <Container className="bg-dark rounded-3 text-white mb-5 pb-5"
@@ -131,7 +122,7 @@ const Game = () => {
                                     return (
                                     <Nav variant="pills" className="flex-column" key={question._id}>
                                         <Nav.Item>
-                                            <Nav.Link eventKey={question._id}>
+                                            <Nav.Link eventKey={question._id} style={{ cursor: 'pointer' }}>
                                                 <Card.Text>{index+1}. {question.question} {game.active_question ===
                                                     question._id && <Badge pill bg="warning" className="text-dark">Live
                                                     </Badge>}</Card.Text>
@@ -141,6 +132,40 @@ const Game = () => {
                                     )
                                     })
                                     }
+                                    {game && currentUser._id === game.started_by &&
+                                    <>
+                                        <Button variant="primary" onClick={handleShow}
+                                            style={{ margin: '10px', width: '100%' }}
+                                        >
+                                            Add New Question
+                                        </Button>
+                                    
+                                        <Modal show={show} onHide={handleClose}>
+                                            <Modal.Header closeButton className="bg-dark">
+                                                <Modal.Title><h2 className="fw-bold p-2 text-center"><code>Add New Question</code></h2></Modal.Title>
+                                            </Modal.Header>
+                                            <Modal.Body className="bg-dark">
+                                                <Form onSubmit={addQuestionHandler} className="text-center w-100">
+                                                    <Form.Group className="mb-3">
+                                                        <FloatingLabel label="Enter a question" className="text-dark">
+                                                            <Form.Control type="text" placeholder="Enter a question" id="question" name="question"
+                                                                value={question} onChange={(e)=>
+                                                                {setQuestion(e.target.value)}}/>
+                                                        </FloatingLabel>
+                                                    </Form.Group>
+                                                    <Button variant="outline-success" className="text-center" type="submit" disabled={loading}>
+                                                        <FaSave /> {loading ? "Adding" : "Add"}
+                                                    </Button>
+                                                </Form>
+                                            </Modal.Body>
+                                            <Modal.Footer className="bg-dark">
+                                                <Button variant="primary" onClick={handleClose}>
+                                                    Close
+                                                </Button>
+                                            </Modal.Footer>
+                                        </Modal>
+                                    </>
+                                    }
                                 </Card.Body>
                             </Card>
                             </Col>
@@ -149,6 +174,7 @@ const Game = () => {
                                 { game.questions.map((question) => {
                                 return (
                                 <Tab.Pane eventKey={question._id} key={question._id}>
+                                    <h2 className="display-6 fw-bold p-2 text-center"><code>Question Name : {question.question}</code></h2>
                                     {game && currentUser._id === game.started_by && game.active_question !== question._id &&
                                     <Row className="p-3 m-3">
                                         <ButtonToolbar className="justify-content-md-center">
@@ -166,7 +192,8 @@ const Game = () => {
                                         <Card bg="light" text="dark" className="mb-2">
                                             <Card.Body>
                                                 <h1 className="text-center">
-                                                    <Badge bg="secondary">{!question.is_active ? vote.points : "?"}
+                                                    <Badge bg="secondary">
+                                                        {!question.is_active || currentUser.name === vote.voter ? vote.points : "?"}
                                                     </Badge>
                                                 </h1>
                                             </Card.Body>
@@ -178,8 +205,35 @@ const Game = () => {
                                         </Col>
                                         )
                                         })}
+                                        {!question.is_active ?
+                                            <Card bg="light" text="dark" className="mb-2">
+                                                <Card.Body>
+                                                    <h4 className="text-center fw-bold p-2">
+                                                        <code>
+                                                            Total Votes Cast : {question.votes.length}
+                                                            <br />
+                                                            Most voted point : 
+                                                            {
+                                                                ` ${[...question.votes.reduce((acc, e) => acc.set(e.points, (acc.get(e.points) || 0) + 1), new Map())
+                                                                .entries()].reduce((a, e ) => e[1] > a[1] ? e : a)[0]}, `
+                                                            }
+                                                            with
+                                                            {
+                                                                ` ${[...question.votes.reduce((acc, e) => acc.set(e.points, (acc.get(e.points) || 0) + 1), new Map())
+                                                                .entries()].reduce((a, e ) => e[1] > a[1] ? e : a)[1] } `
+                                                            }
+                                                            votes
+                                                        </code>
+                                                    </h4>
+                                                </Card.Body>
+                                            </Card>
+                                        : ""}
                                     </Row>
                                     <Row>
+                                        {question.is_active && game.active_question === question._id ?
+                                            <h3 className="fw-bold p-2 text-center"><code>Cast your vote</code></h3>
+                                            : ""
+                                        }
                                         <ButtonToolbar className="w-100 justify-content-md-center">
                                             {question.is_active && game.active_question === question._id && points.map((point) => {
                                             return (

@@ -212,17 +212,26 @@ const Game = () => {
                                                         <code>
                                                             Total Votes Cast : {question.votes.length}
                                                             <br />
-                                                            Most voted point : 
-                                                            {
-                                                                ` ${[...question.votes.reduce((acc, e) => acc.set(e.points, (acc.get(e.points) || 0) + 1), new Map())
-                                                                .entries()].reduce((a, e ) => e[1] > a[1] ? e : a)[0]}, `
-                                                            }
-                                                            with
-                                                            {
-                                                                ` ${[...question.votes.reduce((acc, e) => acc.set(e.points, (acc.get(e.points) || 0) + 1), new Map())
-                                                                .entries()].reduce((a, e ) => e[1] > a[1] ? e : a)[1] } `
-                                                            }
-                                                            votes
+                                                            Most voted point/s : 
+                                                            <ul style={{listStyleType:'none'}}>
+                                                            {(() => {
+                                                                const aggregatedVotes = question.votes.reduce((acc, e) => acc.set(e.points, (acc.get(e.points) || 0) + 1), new Map());
+                                                                const maxVotesCount = [...aggregatedVotes.entries()].reduce((a, e ) => e[1] > a[1] ? e : a)[1];
+                                                                
+                                                                return (
+                                                                    [...aggregatedVotes.entries()].map(([key, value]) => {
+                                                                        if(value === maxVotesCount) {
+                                                                            return (
+                                                                                <li>{key} with {value} vote/s</li>
+                                                                            )
+                                                                        }
+                                                                        return (
+                                                                            ""
+                                                                        )
+                                                                    })
+                                                                )
+                                                            })()}
+                                                            </ul>
                                                         </code>
                                                     </h4>
                                                 </Card.Body>
